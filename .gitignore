@@ -1,3 +1,12 @@
+### Personal ###
+.vscode
+.prettierrc
+temp/
+data/
+
+### Shortcuts ###
+*.ink
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -102,6 +111,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
+pyvenv.cfg
 .env
 .venv
 env/
