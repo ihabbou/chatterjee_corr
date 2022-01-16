@@ -9,7 +9,7 @@ def xicorr(x, y):
     https://github.com/cran/XICOR/blob/master/R/calculateXI.R
 
 
-    Computes robust association measures that do not presuppose linearity. 
+    Computes robust association measures that do not presuppose linearity.
     The xi correlation (xicor) is based on cross correlation between ranked increments.
     The reference for the methods implemented here is [1]_.
 
@@ -27,7 +27,7 @@ def xicorr(x, y):
 
     References
     ----------
-    .. [1] Chatterjee, Sourav. "A New Coefficient of Correlation." 
+    .. [1] Chatterjee, Sourav. "A New Coefficient of Correlation."
            Journal of the American Statistical Association 116 (2020)
 
     Examples
