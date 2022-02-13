@@ -10,7 +10,8 @@ def xicorr(x, y, ties=True):
 
 
     Computes robust association measures that do not presuppose linearity.
-    The xi correlation (xicor) is based on cross correlation between ranked increments.
+    The xi correlation (xicor) is based on cross correlation between ranked
+    increments.
     The reference for the methods implemented here is [1]_.
 
     Parameters
