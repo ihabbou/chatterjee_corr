@@ -3,7 +3,7 @@ import numpy as np
 import scipy.stats as ss
 
 
-def xicorr(x, y):
+def xicorr(x, y, ties=True):
     """Xi Correlation Coefficient adapted from the original CRAN R code
 
     https://github.com/cran/XICOR/blob/master/R/calculateXI.R
@@ -24,6 +24,8 @@ def xicorr(x, y):
     -------
     xi : float
         Xi correlation coefficient.
+    p-value : float
+        Two-tailed p-value.
 
     References
     ----------
@@ -36,10 +38,10 @@ def xicorr(x, y):
     >>> a = np.array([0, 0, 0, 1, 1, 1, 1])
     >>> b = np.arange(7)
     >>> xicorr.xicorr(a, b)
-    (0.625,)
+    (0.625, 0.00620966532577627)
 
     >>> xicorr.xicorr([1, 2, 3, 4, 5], [10, 9, 2.5, 6, 4])
-    (0.1250000000000001,)
+    (0.1250000000000001, 0.34253533115903934)
 
     """
 
@@ -72,4 +74,27 @@ def xicorr(x, y):
     A1 = np.abs(np.diff(fr)).sum() / (2 * n)
     CU = np.mean(gr * (1. - gr))
     xi = 1. - (A1 / CU)
-    return (xi,)
+
+    # p-value is calculated here:
+
+    pvalue = None
+    # https://git.io/JSIlM
+
+    if not ties:
+        # sd = np.sqrt(2.0 / (5.0 * n))
+        pvalue = 1.0 - ss.norm.cdf(np.sqrt(n) * xi / np.sqrt(2.0 / 5.0))
+    else:
+        qfr = np.sort(fr)
+        ind = np.arange(1, n + 1)
+        ind2 = 2 * n - 2 * ind + 1
+
+        ai = np.mean(ind2 * qfr * qfr) / n
+        ci = np.mean(ind2 * qfr) / n
+        cq = np.cumsum(qfr)
+        m = (cq + (n - ind) * qfr) / n
+        b = np.mean(m ** 2)
+        v = (ai - 2.0 * b + ci ** 2) / (CU ** 2)
+
+        # sd = np.sqrt(v / n)
+        pvalue = 1.0 - ss.norm.cdf(np.sqrt(n) * xi / np.sqrt(v))
+    return (xi, pvalue)
